@@ -17,7 +17,7 @@
         "express": "^4.19.2",
         "luxon": "^3.5.0",
         "puppeteer": "^23.1.1",
-        "youtube-transcript": "^1.2.1"
+        "youtube-transcript": "^1.2.1",
         "axios": "^1.5.0",
         "base-64": "^1.0.0"
     }
