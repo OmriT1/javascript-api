@@ -10,13 +10,7 @@ WORKDIR /usr/src/app
 # Copy package files
 COPY package*.json ./
 
-# Set proper permissions for the application directory
-RUN chmod -R 777 /usr/src/app
-
-# Install npm locally (within the project)
-RUN npm install npm@latest
-
-# Use npm ci to install dependencies from package-lock.json
+# Use npm ci to install dependencies from package-lock.json without needing to install npm again
 RUN npm ci
 
 # Copy the rest of the application files
