@@ -7,13 +7,13 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 # Set working directory
 WORKDIR /usr/src/app
 
-# Copy package files and update npm
+# Copy package files
 COPY package*.json ./
 
-# Update npm to latest version to support lockfileVersion 3
-RUN npm install -g npm@latest
+# Install npm locally (within the project), avoiding global installation
+RUN npm install npm@latest
 
-# Install dependencies using npm ci
+# Use npm ci to install dependencies from package-lock.json
 RUN npm ci
 
 # Copy the rest of the application files
