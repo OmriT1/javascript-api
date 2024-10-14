@@ -11,8 +11,9 @@ RUN chown -R pptruser:pptruser /usr/src/app
 
 USER pptruser  # Switch to non-root user
 
-RUN npm install  # Install dependencies
 RUN npm install axios
+
+RUN npm install  # Install dependencies
 
 COPY . .
 CMD [ "node", "index.js" ]
