@@ -4,7 +4,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const puppeteer = require('puppeteer');
 const axios = require('axios'); // Added axios
-const fs = require('fs'); // fs is part of Node.js, no need to install
 const base64 = require('base-64'); // Added base-64
 
 const app = express();
@@ -26,12 +25,12 @@ const checkToken = (req, res, next) => {
     }
 };
 
-// Root Endpoint
-app.get("/", (req, res) => {
-    res.send("Uplifted Render Server Up and running");
-});
+// Get Endpoint
+app.get("/", (req,res) => {
+    res.send("Uplifted Render Server Up and running")
+})
 
-// Execute endpoint (eval code execution)
+// Execute endpoint
 app.post("/execute", checkToken, (req, res) => {
     const code = req.body;
     if (!code) {
@@ -47,7 +46,7 @@ app.post("/execute", checkToken, (req, res) => {
     }
 });
 
-// Scrape Endpoint for Puppeteer
+// POST /scrape endpoint for scraping with Puppeteer
 app.post("/scrape", checkToken, async (req, res) => {
     let code = req.body;
     const timeout = parseInt(req.query.timeout) || 30000;
@@ -97,47 +96,6 @@ app.post("/scrape", checkToken, async (req, res) => {
         console.error("Error stack:", error.stack);
         res.status(500).json({ error: error.message, trace: error.stack });
     }
-});
-
-// Example endpoint using axios
-app.post("/fetch-data", checkToken, async (req, res) => {
-    const url = req.body;
-    if (!url) {
-        return res.status(400).json({ error: "No URL provided" });
-    }
-
-    try {
-        const response = await axios.get(url);
-        res.json({ data: response.data });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Example endpoint using base64 encoding
-app.post("/encode", checkToken, (req, res) => {
-    const text = req.body;
-    if (!text) {
-        return res.status(400).json({ error: "No text provided" });
-    }
-
-    const encodedText = base64.encode(text);
-    res.json({ encoded: encodedText });
-});
-
-// Example endpoint for saving to file using fs
-app.post("/save-to-file", checkToken, (req, res) => {
-    const { filename, content } = JSON.parse(req.body);
-    if (!filename || !content) {
-        return res.status(400).json({ error: "Filename or content missing" });
-    }
-
-    fs.writeFile(filename, content, (err) => {
-        if (err) {
-            return res.status(500).json({ error: "Failed to save file" });
-        }
-        res.json({ message: "File saved successfully" });
-    });
 });
 
 app.listen(PORT, () => {
