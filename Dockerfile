@@ -5,7 +5,13 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /usr/src/app
 
+# Copy files and set permissions
 COPY package*.json ./
-RUN npm install  # Replace npm ci with npm install
+RUN chown -R pptruser:pptruser /usr/src/app
+
+USER pptruser  # Switch to non-root user
+
+RUN npm install  # Install dependencies
+
 COPY . .
 CMD [ "node", "index.js" ]
